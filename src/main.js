@@ -18,8 +18,10 @@ import config from './config.js'
 
 import '@fortawesome/fontawesome-pro/js/all';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import '../node_modules/phila-standards/dist/css/phila-app.min.css';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-easybutton/src/easy-button.css';
+import 'leaflet-measure/dist/leaflet-measure.css';
+import '../node_modules/phila-standards/dist/css/phila-app.min.css';
 import './styles.css';
 
 import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';

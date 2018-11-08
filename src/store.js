@@ -12,6 +12,8 @@ function createStore(config) {
   const initialState = {
     candidates: [],
     addressEntered: null,
+    imagery: 'imagery2018',
+    shouldShowImagery: false,
   };
 
   const mb = {
@@ -22,6 +24,12 @@ function createStore(config) {
       },
       setAddressEntered(state, payload) {
         state.addressEntered = payload;
+      },
+      setImagery(state, payload) {
+        state.map.imagery = payload;
+      },
+      setShouldShowImagery(state, payload) {
+        state.map.shouldShowImagery = payload;
       },
     }
   }

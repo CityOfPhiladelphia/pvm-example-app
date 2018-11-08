@@ -27,15 +27,87 @@
             :min-zoom="this.$config.map.minZoom"
             :max-zoom="this.$config.map.maxZoom"
       >
+        <div v-once>
+          <!-- <basemap-toggle-control v-if="shouldShowImageryToggle" -->
+          <basemap-toggle-control
+                                  v-once
+                                  :position="'topright'"
+          />
+        </div>
+
+        <div v-once>
+          <basemap-select-control :position="'topright'" />
+          <!-- <basemap-select-control :position="this.basemapSelectControlPosition" /> -->
+        </div>
+
         <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
-                              v-if="'pwd' === key"
-                              :key="'pwd'"
+                              v-if="activeBasemap === key"
+                              :key="key"
                               :url="basemap.url"
                               :max-zoom="basemap.maxZoom"
                               :attribution="basemap.attribution"
         />
 
+        <esri-tiled-map-layer v-for="(tiledLayer, key) in this.$config.map.tiledLayers"
+                              v-if="tiledLayers.includes(key)"
+                              :key="key"
+                              :url="tiledLayer.url"
+                              :zIndex="tiledLayer.zIndex"
+                              :attribution="tiledLayer.attribution"
+        />
+
+        <!-- <esri-tiled-overlay v-for="(tiledLayer, key) in this.$config.map.tiledOverlays"
+                            v-if="activeTiledOverlays.includes(key)"
+                            :key="key"
+                            :url="tiledLayer.url"
+                            :zIndex="tiledLayer.zIndex"
+                            :opacity="tiledLayer.opacity"
+        /> -->
+
+        <!-- <esri-dynamic-map-layer v-for="(dynamicLayer, key) in this.$config.map.dynamicMapLayers"
+                                v-if="activeDynamicMaps.includes(key)"
+                                :key="key"
+                                :url="dynamicLayer.url"
+                                :attribution="dynamicLayer.attribution"
+                                :transparent="true"
+                                :opacity="dynamicLayer.opacity"
+        /> -->
+
+        <!-- dorParcels, pwdParcels, vacantLand, vacantBuilding -->
+        <!-- <esri-feature-layer v-for="(featureLayer, key) in this.$config.map.featureLayers"
+                            v-if="shouldShowFeatureLayer(key, featureLayer.minZoom)"
+                            :key="key"
+                            :layerName="key"
+                            :url="featureLayer.url"
+                            :color="featureLayer.color"
+                            :fillColor="featureLayer.color"
+                            :fillOpacity="featureLayer.fillOpacity"
+                            :weight="featureLayer.weight"
+                            :style_="featureLayer.style"
+                            :minZoom="featureLayer.minZoom"
+                            :maxZoom="featureLayer.maxZoom"
+                            :zIndex="featureLayer.zIndex"
+                            :markerType="featureLayer.markerType"
+                            :radius="featureLayer.radius"
+                            :interactive="featureLayer.interactive"
+        /> -->
+
+        <!-- <div v-once>
+          <cyclomedia-button v-if="this.shouldShowCyclomediaButton"
+                             v-once
+                             :position="'topright'"
+                             :link="'cyclomedia'"
+                             :imgSrc="'images/cyclomedia.png'"
+                             @click="handleCyclomediaButtonClick"
+          />
+        </div> -->
+
       </map_>
+      <!-- <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
+                         slot="cycloWidget"
+                         v-show="cyclomediaActive"
+                         screen-percent="2"
+      /> -->
 
     </div>
 
@@ -48,11 +120,25 @@
   import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
   const Map_ = philaVueMapping.Map_;
   const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
+  const BasemapToggleControl = philaVueMapping.BasemapToggleControl;
+  const BasemapSelectControl = philaVueMapping.BasemapSelectControl;
+  const EsriTiledOverlay = philaVueMapping.EsriTiledOverlay;
+  const EsriDynamicMapLayer = philaVueMapping.EsriDynamicMapLayer;
+  const EsriFeatureLayer = philaVueMapping.EsriFeatureLayer;
+  // const CyclomediaButton = philaVueMapping.CyclomediaButton;
+  // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
 
   export default {
     components: {
       Map_,
       EsriTiledMapLayer,
+      BasemapToggleControl,
+      BasemapSelectControl,
+      EsriTiledOverlay,
+      EsriDynamicMapLayer,
+      EsriFeatureLayer,
+      // CyclomediaButton,
+      // CyclomediaWidget,
     },
     data() {
       const data = {
@@ -64,23 +150,72 @@
 
     },
     computed: {
+      activeBasemap() {
+        const shouldShowImagery = this.$store.state.map.shouldShowImagery;
+        if (shouldShowImagery) {
+          return this.$store.state.map.imagery;
+        }
+        const defaultBasemap = this.$config.map.defaultBasemap;
+        const basemap = this.$store.state.map.basemap || defaultBasemap;
+        return basemap;
+      },
+      tiledLayers() {
+        const activeBasemap = this.activeBasemap;
+        const activeBasemapConfig = this.configForBasemap(activeBasemap)
 
+        return activeBasemapConfig.tiledLayers || [];
+      },
+      // cyclomediaActive() {
+      //   return this.$store.state.cyclomedia.active
+      // },
+      // shouldShowCyclomediaButton() {
+      //   return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      // },
+      // shouldLoadCyclomediaWidget() {
+      //   return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
+      // },
+      // handleCyclomediaButtonClick(e) {
+      //   if (!this.cyclomediaInitialized) {
+      //     this.$store.commit('setCyclomediaInitialized', true);
+      //   }
+      //   const willBeActive = !this.$store.state.cyclomedia.active;
+      //   this.$store.commit('setCyclomediaActive', willBeActive);
+      // },
     },
+    methods: {
+      configForBasemap(basemap) {
+        return this.$config.map.basemaps[basemap] || {};
+      },
+    }
 
   };
 
 </script>
 
-<style scoped>
+<style>
 
 #app-root {
   height: 100%
 }
 
 #components-root {
-  padding: 20px;
+  /* padding: 20px; */
   height: 90%;
   overflow-y: auto;
+}
+
+/*don't highlight any form elements*/
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+/* standards applies padding to buttons, which causes some weirdness with
+buttons on the map panel. override here. */
+button {
+  padding: inherit !important;
 }
 
 .component-label {

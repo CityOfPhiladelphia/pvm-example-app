@@ -5315,7 +5315,7 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
-phila-standards@^1.0.0, phila-standards@^1.0.2:
+phila-standards@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/phila-standards/-/phila-standards-1.0.2.tgz#07dc375ef7c290fd330320f04c2dd3e303ad69e1"
   dependencies:
