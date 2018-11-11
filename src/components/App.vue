@@ -35,10 +35,37 @@
           />
         </div>
 
+        <control-corner :vSide="'top'"
+                        :hSide="'almostright'"
+        >
+        </control-corner>
+
         <div v-once>
-          <basemap-select-control :position="'topright'" />
+          <basemap-select-control :position="'topalmostright'" />
           <!-- <basemap-select-control :position="this.basemapSelectControlPosition" /> -->
         </div>
+
+        <div v-once>
+          <measure-control :position="'bottomleft'" />
+        </div>
+
+        <div v-once>
+          <location-control v-once
+                            :position="'bottomright'"
+          />
+        </div>
+
+        <!-- location marker -->
+        <circle-marker v-if="this.$store.state.map.location.lat != null"
+                       :latlng="this.locationMarker.latlng"
+                       :radius="this.locationMarker.radius"
+                       :fillColor="this.locationMarker.fillColor"
+                       :color="this.locationMarker.color"
+                       :weight="this.locationMarker.weight"
+                       :opacity="this.locationMarker.opacity"
+                       :fillOpacity="this.locationMarker.fillOpacity"
+        />
+        <!-- :pane="'highlightOverlay'" -->
 
         <esri-tiled-map-layer v-for="(basemap, key) in this.$config.map.basemaps"
                               v-if="activeBasemap === key"
@@ -122,9 +149,14 @@
   const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
   const BasemapToggleControl = philaVueMapping.BasemapToggleControl;
   const BasemapSelectControl = philaVueMapping.BasemapSelectControl;
+  const ControlCorner = philaVueMapping.ControlCorner;
+  const MeasureControl = philaVueMapping.MeasureControl;
+  const LocationControl = philaVueMapping.LocationControl;
+  const CircleMarker = philaVueMapping.CircleMarker;
+
   const EsriTiledOverlay = philaVueMapping.EsriTiledOverlay;
-  const EsriDynamicMapLayer = philaVueMapping.EsriDynamicMapLayer;
-  const EsriFeatureLayer = philaVueMapping.EsriFeatureLayer;
+  // const EsriDynamicMapLayer = philaVueMapping.EsriDynamicMapLayer;
+  // const EsriFeatureLayer = philaVueMapping.EsriFeatureLayer;
   // const CyclomediaButton = philaVueMapping.CyclomediaButton;
   // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
 
@@ -135,8 +167,12 @@
       BasemapToggleControl,
       BasemapSelectControl,
       EsriTiledOverlay,
-      EsriDynamicMapLayer,
-      EsriFeatureLayer,
+      ControlCorner,
+      MeasureControl,
+      LocationControl,
+      CircleMarker,
+      // EsriDynamicMapLayer,
+      // EsriFeatureLayer,
       // CyclomediaButton,
       // CyclomediaWidget,
     },
@@ -165,6 +201,19 @@
 
         return activeBasemapConfig.tiledLayers || [];
       },
+      locationMarker() {
+        const latlngArray = [this.$store.state.map.location.lat, this.$store.state.map.location.lng]
+        const marker = {
+          latlng: latlngArray,
+          radius: 6,
+          fillColor: '#ff3f3f',
+          color: '#ff0000',
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 1.0
+        }
+        return marker;
+      },
       // cyclomediaActive() {
       //   return this.$store.state.cyclomedia.active
       // },
@@ -192,7 +241,8 @@
 
 </script>
 
-<style>
+<style
+>
 
 #app-root {
   height: 100%
