@@ -15,6 +15,9 @@ let config = {
     measurementAllowed: false,
     popoutAble: true,
   },
+  pictometry: {
+    enabled: false,
+  },
 }
 
 export default config;

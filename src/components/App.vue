@@ -142,19 +142,17 @@
 </template>
 
 <script>
-  import axios from 'axios';
 
-  import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
-  const Map_ = philaVueMapping.Map_;
-  const EsriTiledMapLayer = philaVueMapping.EsriTiledMapLayer;
-  const BasemapToggleControl = philaVueMapping.BasemapToggleControl;
-  const BasemapSelectControl = philaVueMapping.BasemapSelectControl;
-  const ControlCorner = philaVueMapping.ControlCorner;
-  const MeasureControl = philaVueMapping.MeasureControl;
-  const LocationControl = philaVueMapping.LocationControl;
-  const CircleMarker = philaVueMapping.CircleMarker;
+  import Map_ from '@cityofphiladelphia/phila-vue-mapping/src/leaflet/Map.vue';
+  import EsriTiledMapLayer from '@cityofphiladelphia/phila-vue-mapping/src/esri-leaflet/TiledMapLayer.vue';
+  import BasemapToggleControl from '@cityofphiladelphia/phila-vue-mapping/src/components/BasemapToggleControl.vue';
+  import BasemapSelectControl from '@cityofphiladelphia/phila-vue-mapping/src/components/BasemapSelectControl.vue';
+  import ControlCorner from '@cityofphiladelphia/phila-vue-mapping/src/leaflet/ControlCorner.vue';
+  import MeasureControl from '@cityofphiladelphia/phila-vue-mapping/src/components/MeasureControl.vue';
+  import LocationControl from '@cityofphiladelphia/phila-vue-mapping/src/components/LocationControl.vue';
+  import CircleMarker from '@cityofphiladelphia/phila-vue-mapping/src/leaflet/CircleMarker.vue';
 
-  const EsriTiledOverlay = philaVueMapping.EsriTiledOverlay;
+  // const EsriTiledOverlay = philaVueMapping.EsriTiledOverlay;
   // const EsriDynamicMapLayer = philaVueMapping.EsriDynamicMapLayer;
   // const EsriFeatureLayer = philaVueMapping.EsriFeatureLayer;
   // const CyclomediaButton = philaVueMapping.CyclomediaButton;
@@ -166,7 +164,7 @@
       EsriTiledMapLayer,
       BasemapToggleControl,
       BasemapSelectControl,
-      EsriTiledOverlay,
+      // EsriTiledOverlay,
       ControlCorner,
       MeasureControl,
       LocationControl,

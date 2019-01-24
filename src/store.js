@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import mergeDeep from './util/merge-deep';
-import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
-const pvmStore = philaVueMapping.pvmStore
+// import pvmStore from '@cityofphiladelphia/phila-vue-mapping';
+import pvmStore from '../node_modules/@cityofphiladelphia/phila-vue-mapping/src/store.js';
+;
 
 // when you load vuex from a script tag this seems to happen automatically
 Vue.use(Vuex);
